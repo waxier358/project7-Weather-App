@@ -17,6 +17,7 @@ class WeatherGui(tkinter.Tk):
         self.geometry('550x600')
         self.iconbitmap('weather.ico')
         self.option_add('*TCombobox*Listbox.font', small_font)
+        self.resizable(False, False)
 
         self.current_background_color = below_10
 
@@ -61,14 +62,12 @@ class WeatherGui(tkinter.Tk):
         url = f'https://api.openweathermap.org/data/2.5/weather?q={self.city_name_entry.get()}, ' \
               f'{country_code.get(self.country_name_dropdown.get())}&appid={api_key}&units={"metric"}'
         response = requests.request('GET', url).json()
-        print(type(response))
         self.make_gui(response)
 
     def make_gui(self, response: dict):
         """place information from API response in GUI"""
 
         current_temp = float(response['main']['temp'])
-
         self.find_background_color(current_temp)
 
         self.config(bg=self.current_background_color)
@@ -118,7 +117,9 @@ class WeatherGui(tkinter.Tk):
 
     def find_background_color(self, current_temp: float):
         """based on current_temp find background color"""
-        if -10 < current_temp <= 0:
+        if current_temp < -10:
+            self.current_background_color = below_10
+        elif -10 <= current_temp <= 0:
             self.current_background_color = between_10_and_0
         elif 0 < current_temp <= 11:
             self.current_background_color = between_0_and_10
