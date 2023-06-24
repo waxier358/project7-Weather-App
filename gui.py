@@ -58,7 +58,7 @@ class WeatherGui(tkinter.Tk):
         """access openweathermap API based on city or/and country"""
         self.country_name_dropdown.selection_clear()
 
-        api_key = 'b524906f00443e7ccc82cd58e2454296'
+        api_key = 'enter your API key here'
         url = f'https://api.openweathermap.org/data/2.5/weather?q={self.city_name_entry.get()}, ' \
               f'{country_code.get(self.country_name_dropdown.get())}&appid={api_key}&units={"metric"}'
         response = requests.request('GET', url).json()
